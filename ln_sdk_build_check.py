@@ -247,9 +247,6 @@ def main():
         # http_ota_example
         "project/http_ota_example/keil_ln882h_rel",
 
-        # aws_iot_core
-        "project/aws_iot_core/demo_http_mutual_auth/keil_ln882h_rel",
-        "project/aws_iot_core/demo_mqtt_mutual_auth/keil_ln882h_rel",
         # mcu_peripheral_driver_test
         "project/mcu_peripheral_driver_test/keil_ln882h_dev",
         # mcu_peripheral_driver_demo
@@ -284,9 +281,6 @@ def main():
         "combo_mcu_basic_example",
 
         "http_ota_example",
-        "smartconfig",
-        "aws_iot_core",
-        "mcu_peripheral_driver_test",
     ]
 
     check_platform()
