@@ -218,7 +218,7 @@ def do_merge_fw(fw_list, offset_list, outfile):
 def call_sdk_env_check():
     script_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "tools", "python_scripts", "sdk_env_check.py")
     try:
-        retcode = subprocess.check_call(["python", script_path])
+        retcode = subprocess.check_call(["python3", script_path])
         if retcode != 0:
             return False
     except subprocess.CalledProcessError as err:

@@ -720,6 +720,6 @@ const wlib_wifi_data_rate_t *wlib_data_rate_info_get(void)
 
 void wlib_get_1f_20_cfg(uint8_t *val_1f, uint8_t *val_20)
 {
-    *val_1f = 0x4C + 4;   //1f=>11A=>GN [default value]
-    *val_20 = 0x3C + 48;  //20=>11B=>B  [default value]
+    *val_1f = 0x4C;  //1f=>11A=>GN [default value]
+    *val_20 = 0x3C;  //20=>11B=>B  [default value]
 }

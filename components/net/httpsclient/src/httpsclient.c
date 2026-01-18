@@ -769,12 +769,11 @@ static int https_connect(HTTP_INFO *hi, char *host, char *port)
             return ret;
         }
 
-        // NOTE: no need to set hostname
-        // ret = mbedtls_ssl_set_hostname( &hi->tls.ssl, host );
-        // if( ret != 0 )
-        // {
-        //     return ret;
-        // }
+        ret = mbedtls_ssl_set_hostname( &hi->tls.ssl, host );
+        if( ret != 0 )
+        {
+            return ret;
+        }
     }
 
     // ret = mbedtls_net_connect_timeout(&hi->tls.ssl_fd, host, port, MBEDTLS_NET_PROTO_TCP, 5000);
