@@ -117,7 +117,7 @@
 #if (configUSE_CPU_USAGE == 1)
 #define configUSE_IDLE_HOOK				1
 #else
-#define configUSE_IDLE_HOOK				0
+#define configUSE_IDLE_HOOK				1
 #endif
 
 /* Task run time monitoring in factory mode. */
