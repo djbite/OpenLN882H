@@ -394,7 +394,7 @@ static inline void uart0_recv_data_isr(void)
     hw->serial->rx_callback();
 }
 
-static inline void serial_uart0_isr_callback(void)
+void serial_uart0_isr_callback(void)
 {
     if (hal_uart_it_en_status_get(UART0_BASE, USART_IT_RXNE) && \
         hal_uart_flag_get(UART0_BASE, USART_FLAG_RXNE)) {
@@ -501,10 +501,10 @@ static inline void serial_uart2_isr_callback(void)
     }
 }
 
-void UART0_IRQHandler(void)
-{
-    serial_uart0_isr_callback();
-}
+//void UART0_IRQHandler(void)
+//{
+//    serial_uart0_isr_callback();
+//}
 
 void UART1_IRQHandler(void)
 {

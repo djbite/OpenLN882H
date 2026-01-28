@@ -35,20 +35,26 @@ int main (int argc, char* argv[])
     //2. register os heap mem
     OS_DefineHeapRegions();
 
+    //if (LN_AT_ERR_NONE != ln_at_init()) {
+    //    LOG(LOG_LVL_ERROR, "ln at init fail.\r\n");
+    //    return -1;
+    //}
+
+    int nvdserr = ln_nvds_init(NVDS_SPACE_OFFSET);
+    int kverr = ln_kv_port_init(KV_SPACE_OFFSET, (KV_SPACE_OFFSET + KV_SPACE_SIZE));
+
     log_init();
-    if (LN_AT_ERR_NONE != ln_at_init()) {
-        LOG(LOG_LVL_ERROR, "ln at init fail.\r\n");
-        return -1;
-    }
 
     cm_backtrace_init("wifi_mcu_basic_example", "HW_V1.0", "SW_V1.0");
     LOG(LOG_LVL_INFO, "------  Welcome to OpenBeken for the LN882H  ------\r\n");
 
-    if (NVDS_ERR_OK != ln_nvds_init(NVDS_SPACE_OFFSET)) {
+    if(NVDS_ERR_OK != nvdserr)
+    {
         LOG(LOG_LVL_ERROR, "NVDS init filed!\r\n");
     }
 
-    if (KV_ERR_NONE != ln_kv_port_init(KV_SPACE_OFFSET, (KV_SPACE_OFFSET + KV_SPACE_SIZE))) {
+    if(KV_ERR_NONE != kverr)
+    {
         LOG(LOG_LVL_ERROR, "KV init filed!\r\n");
     }
 

@@ -2,12 +2,14 @@
 #include "proj_config.h"
 #include "utils/debug/log.h"
 #include "serial.h"
+#include "ln_kv_api.h"
 
 #include "stddef.h"
 
 #define LOG_PORT_BAUDRATE  CFG_UART_BAUDRATE_LOG
 
 Serial_t m_LogSerial;
+#define KV_LOG_PORT "logport"
 
 int log_stdio_write(char *buf, size_t size)
 {
@@ -84,7 +86,15 @@ void hexdump(uint8_t level, const char *info, void *buff, uint32_t count)
 
 void log_init(void)
 {
-    serial_init(&m_LogSerial, SER_PORT_UART0, LOG_PORT_BAUDRATE, NULL);
+    serial_port_id_t port = SER_PORT_UART0;
+    size_t value_len = 0;
+    int ret = ln_kv_get(KV_LOG_PORT, &port, sizeof(port), &value_len);
+    if(ret != KV_ERR_NONE || (port != SER_PORT_UART0 && port != SER_PORT_UART1 && port != SER_PORT_UART2))
+    {
+        port = SER_PORT_UART0;
+        ln_kv_set(KV_LOG_PORT, &port, sizeof(port));
+    }
+    serial_init(&m_LogSerial, port, LOG_PORT_BAUDRATE, NULL);
 }
 
 void log_deinit(void)
