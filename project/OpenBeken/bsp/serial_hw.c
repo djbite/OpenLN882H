@@ -12,16 +12,16 @@
 #define UART0_RX_BUF_SIZE  CFG_UART0_RX_BUF_SIZE
 #define UART1_TX_BUF_SIZE  CFG_UART1_TX_BUF_SIZE
 #define UART1_RX_BUF_SIZE  CFG_UART1_RX_BUF_SIZE
-#define UART2_TX_BUF_SIZE  CFG_UART2_TX_BUF_SIZE
-#define UART2_RX_BUF_SIZE  CFG_UART2_RX_BUF_SIZE
+//#define UART2_TX_BUF_SIZE  CFG_UART2_TX_BUF_SIZE
+//#define UART2_RX_BUF_SIZE  CFG_UART2_RX_BUF_SIZE
 
 /* TX and RX fifo buffer */
 uint8_t uart0_txbuf[UART0_TX_BUF_SIZE];
 uint8_t uart0_rxbuf[UART0_RX_BUF_SIZE];
 uint8_t uart1_txbuf[UART1_TX_BUF_SIZE];
 uint8_t uart1_rxbuf[UART1_RX_BUF_SIZE];
-uint8_t uart2_txbuf[UART2_TX_BUF_SIZE];
-uint8_t uart2_rxbuf[UART2_RX_BUF_SIZE];
+//uint8_t uart2_txbuf[UART2_TX_BUF_SIZE];
+//uint8_t uart2_rxbuf[UART2_RX_BUF_SIZE];
 
 /* From the high-level serial driver */
 extern Serial_t serial_handles[SER_PORT_NUM];
@@ -35,7 +35,7 @@ typedef struct
 
 static uart_dev_t g_uart0;
 static uart_dev_t g_uart1;
-static uart_dev_t g_uart2;
+//static uart_dev_t g_uart2;
 
 /* serial */
 typedef struct
@@ -62,9 +62,9 @@ static void uart_io_pin_request(struct Serial *serial)
         hal_gpio_pin_afio_en(GPIOA_BASE,GPIO_PIN_2,HAL_ENABLE);
         hal_gpio_pin_afio_en(GPIOA_BASE,GPIO_PIN_3,HAL_ENABLE);
     } 
-    else if (serial->port_id == SER_PORT_UART2)
-    {
-    }
+    //else if (serial->port_id == SER_PORT_UART2)
+    //{
+    //}
 }
 
 static void uart_io_pin_release(struct Serial *serial)
@@ -84,9 +84,9 @@ static void uart_io_pin_release(struct Serial *serial)
         hal_gpio_pin_afio_en(GPIOA_BASE,GPIO_PIN_2,HAL_DISABLE);
         hal_gpio_pin_afio_en(GPIOA_BASE,GPIO_PIN_3,HAL_DISABLE);
     } 
-    else if (serial->port_id == SER_PORT_UART2)
-    {
-    }
+    //else if (serial->port_id == SER_PORT_UART2)
+    //{
+    //}
 }
 
 static void hw_uart0_init(struct SerialHardware *_hw, struct Serial *serial, uint32_t baudrate)
@@ -148,34 +148,34 @@ static void hw_uart1_init(struct SerialHardware *_hw, struct Serial *serial, uin
     uart_io_pin_request(hw->serial);
 }
 
-static void hw_uart2_init(struct SerialHardware *_hw, struct Serial *serial, uint32_t baudrate)
-{
-    ln_serial_t *hw = NULL;
-
-    LN_ASSERT(_hw && serial);
-    hw = (ln_serial_t *)_hw;
-    hw->serial = serial;
-
-    g_uart2.uart_base          = UART2_BASE;
-    g_uart2.init_cfg.baudrate  = baudrate;//115200 921600 2000000
-    g_uart2.init_cfg.word_len  = UART_WORD_LEN_8;
-    g_uart2.init_cfg.parity    = UART_PARITY_NONE;
-    g_uart2.init_cfg.stop_bits = UART_STOP_BITS_1;
-    g_uart2.init_cfg.over_sampl= UART_OVER_SAMPL_8;
-
-    hal_uart_init(g_uart2.uart_base, &g_uart2.init_cfg);
-
-    hal_uart_rx_mode_en(g_uart2.uart_base, HAL_ENABLE);
-    hal_uart_tx_mode_en(g_uart2.uart_base, HAL_ENABLE);
-    hal_uart_en(g_uart2.uart_base, HAL_ENABLE);
-
-    hal_uart_it_en(g_uart2.uart_base, USART_IT_RXNE);
-    //uart_it_enable(g_uart2.uart_base, USART_IT_TXE);
-    NVIC_EnableIRQ(UART2_IRQn);
-
-    //request pin for uart
-    uart_io_pin_request(hw->serial);
-}
+//static void hw_uart2_init(struct SerialHardware *_hw, struct Serial *serial, uint32_t baudrate)
+//{
+//    ln_serial_t *hw = NULL;
+//
+//    LN_ASSERT(_hw && serial);
+//    hw = (ln_serial_t *)_hw;
+//    hw->serial = serial;
+//
+//    g_uart2.uart_base          = UART2_BASE;
+//    g_uart2.init_cfg.baudrate  = baudrate;//115200 921600 2000000
+//    g_uart2.init_cfg.word_len  = UART_WORD_LEN_8;
+//    g_uart2.init_cfg.parity    = UART_PARITY_NONE;
+//    g_uart2.init_cfg.stop_bits = UART_STOP_BITS_1;
+//    g_uart2.init_cfg.over_sampl= UART_OVER_SAMPL_8;
+//
+//    hal_uart_init(g_uart2.uart_base, &g_uart2.init_cfg);
+//
+//    hal_uart_rx_mode_en(g_uart2.uart_base, HAL_ENABLE);
+//    hal_uart_tx_mode_en(g_uart2.uart_base, HAL_ENABLE);
+//    hal_uart_en(g_uart2.uart_base, HAL_ENABLE);
+//
+//    hal_uart_it_en(g_uart2.uart_base, USART_IT_RXNE);
+//    //uart_it_enable(g_uart2.uart_base, USART_IT_TXE);
+//    NVIC_EnableIRQ(UART2_IRQn);
+//
+//    //request pin for uart
+//    uart_io_pin_request(hw->serial);
+//}
 
 static void hw_uart0_cleanup(struct SerialHardware *_hw)
 {
@@ -205,19 +205,19 @@ static void hw_uart1_cleanup(struct SerialHardware *_hw)
     hw->serial = NULL;                                                          // must be reset to NULL
 }
 
-static void hw_uart2_cleanup(struct SerialHardware *_hw)
-{
-    ln_serial_t *hw = NULL;
-    LN_ASSERT(_hw);
-
-    hal_misc_reset_uart2();
-    NVIC_ClearPendingIRQ(UART2_IRQn);
-    NVIC_DisableIRQ(UART2_IRQn);
-
-    hw = (ln_serial_t *)_hw;
-    uart_io_pin_release(hw->serial);
-    hw->serial = NULL;                                                          // must be reset to NULL
-}
+//static void hw_uart2_cleanup(struct SerialHardware *_hw)
+//{
+//    ln_serial_t *hw = NULL;
+//    LN_ASSERT(_hw);
+//
+//    hal_misc_reset_uart2();
+//    NVIC_ClearPendingIRQ(UART2_IRQn);
+//    NVIC_DisableIRQ(UART2_IRQn);
+//
+//    hw = (ln_serial_t *)_hw;
+//    uart_io_pin_release(hw->serial);
+//    hw->serial = NULL;                                                          // must be reset to NULL
+//}
 
 static void hw_uart_tx_start_polling(struct SerialHardware * _hw)
 {
@@ -301,14 +301,14 @@ static const struct SerialHardwareVT uart1_vtable =
     .setBaudrate = hw_uart_set_baudrate,
 };
 
-static const struct SerialHardwareVT uart2_vtable =
-{
-    .init        = hw_uart2_init,
-    .cleanup     = hw_uart2_cleanup,
-    .txStart     = hw_uart_tx_start_polling,//hw_uart_tx_start_isr
-    .txSending   = hw_uart_tx_is_sending,
-    .setBaudrate = hw_uart_set_baudrate,
-};
+//static const struct SerialHardwareVT uart2_vtable =
+//{
+//    .init        = hw_uart2_init,
+//    .cleanup     = hw_uart2_cleanup,
+//    .txStart     = hw_uart_tx_start_polling,//hw_uart_tx_start_isr
+//    .txSending   = hw_uart_tx_is_sending,
+//    .setBaudrate = hw_uart_set_baudrate,
+//};
 
 ln_serial_t uart_serial[SER_PORT_NUM] =
 {
@@ -338,19 +338,19 @@ ln_serial_t uart_serial[SER_PORT_NUM] =
         },
         .serial = NULL,
     },
-    {
-        .Hardware =
-        {
-          .table         = &uart2_vtable,
-          .txbuffer      = uart2_txbuf,
-          .rxbuffer      = uart2_rxbuf,
-          .txbuffer_size = sizeof(uart2_txbuf),
-          .rxbuffer_size = sizeof(uart2_rxbuf),
-          .hw_device     = (void *)&g_uart2,
-          .isSending     = LN_FALSE,
-        },
-        .serial = NULL,
-    },
+    //{
+    //    .Hardware =
+    //    {
+    //      .table         = &uart2_vtable,
+    //      .txbuffer      = uart2_txbuf,
+    //      .rxbuffer      = uart2_rxbuf,
+    //      .txbuffer_size = sizeof(uart2_txbuf),
+    //      .rxbuffer_size = sizeof(uart2_rxbuf),
+    //      .hw_device     = (void *)&g_uart2,
+    //      .isSending     = LN_FALSE,
+    //    },
+    //    .serial = NULL,
+    //},
 };
 
 struct SerialHardware *serial_hw_getdesc(serial_port_id_t port_id)
@@ -454,52 +454,52 @@ static inline void serial_uart1_isr_callback(void)
     }
 }
 
-static inline void uart2_send_data_isr(void)
-{
-    ln_serial_t *hw = (ln_serial_t *)&uart_serial[SER_PORT_UART2];
-    uint8_t tx_char = 0;
+//static inline void uart2_send_data_isr(void)
+//{
+//    ln_serial_t *hw = (ln_serial_t *)&uart_serial[SER_PORT_UART2];
+//    uint8_t tx_char = 0;
+//
+//    if (fifo_isempty(&hw->serial->txfifo))
+//    {
+//        hal_uart_it_disable(UART2_BASE, USART_IT_TXE);
+//        hw->Hardware.isSending = LN_FALSE;
+//    }
+//    else
+//    {
+//        tx_char = fifo_pop(&hw->serial->txfifo);
+//        hal_uart_send_data(UART2_BASE, tx_char);
+//        while (hal_uart_flag_get(UART2_BASE, USART_FLAG_TX_FIFO_FULL) == HAL_SET) {};
+//    }
+//}
 
-    if (fifo_isempty(&hw->serial->txfifo))
-    {
-        hal_uart_it_disable(UART2_BASE, USART_IT_TXE);
-        hw->Hardware.isSending = LN_FALSE;
-    }
-    else
-    {
-        tx_char = fifo_pop(&hw->serial->txfifo);
-        hal_uart_send_data(UART2_BASE, tx_char);
-        while (hal_uart_flag_get(UART2_BASE, USART_FLAG_TX_FIFO_FULL) == HAL_SET) {};
-    }
-}
-
-static inline void uart2_recv_data_isr(void)
-{
-    uint8_t ch = 0;
-
-    ln_serial_t *hw = (ln_serial_t *)&uart_serial[SER_PORT_UART2];
-
-    while (fifo_isfull(&hw->serial->rxfifo)){
-        serial_purge_rx(hw->serial);
-    }
-
-    ch = hal_uart_recv_data(UART2_BASE);
-
-    fifo_push(&hw->serial->rxfifo, ch);
-    hw->serial->rx_callback();
-}
-
-static inline void serial_uart2_isr_callback(void)
-{
-    if (hal_uart_it_en_status_get(UART2_BASE, USART_IT_RXNE) && \
-        hal_uart_flag_get(UART2_BASE, USART_FLAG_RXNE)) {
-        uart2_recv_data_isr();
-    }
-
-    if (hal_uart_it_en_status_get(UART2_BASE, USART_IT_TXE) && \
-        hal_uart_flag_get(UART2_BASE, USART_FLAG_TXE)) {
-        uart2_send_data_isr();
-    }
-}
+//static inline void uart2_recv_data_isr(void)
+//{
+//    uint8_t ch = 0;
+//
+//    ln_serial_t *hw = (ln_serial_t *)&uart_serial[SER_PORT_UART2];
+//
+//    while (fifo_isfull(&hw->serial->rxfifo)){
+//        serial_purge_rx(hw->serial);
+//    }
+//
+//    ch = hal_uart_recv_data(UART2_BASE);
+//
+//    fifo_push(&hw->serial->rxfifo, ch);
+//    hw->serial->rx_callback();
+//}
+//
+//static inline void serial_uart2_isr_callback(void)
+//{
+//    if (hal_uart_it_en_status_get(UART2_BASE, USART_IT_RXNE) && \
+//        hal_uart_flag_get(UART2_BASE, USART_FLAG_RXNE)) {
+//        uart2_recv_data_isr();
+//    }
+//
+//    if (hal_uart_it_en_status_get(UART2_BASE, USART_IT_TXE) && \
+//        hal_uart_flag_get(UART2_BASE, USART_FLAG_TXE)) {
+//        uart2_send_data_isr();
+//    }
+//}
 
 void UART0_IRQHandler(void)
 {
@@ -511,8 +511,8 @@ void UART1_IRQHandler(void)
     serial_uart1_isr_callback();
 }
 
-void UART2_IRQHandler(void)
-{
-    serial_uart2_isr_callback();
-}
+//void UART2_IRQHandler(void)
+//{
+//    serial_uart2_isr_callback();
+//}
 
