@@ -1,0 +1,22 @@
+name: Build OpenLN882H
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - name: Install dependencies
+        run: pip install pyelftools
+      - name: Build Firmware
+        run: python3 start_build.py rebuild
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: OpenLN882H_binaries
+          path: project/wifi_mcu_basic_example/output/
