@@ -22,6 +22,8 @@ jobs:
       - name: Build
         run: |
           pip install pyelftools
+          # Создаем папку вручную, чтобы скрипт не ругался
+          mkdir -p project/wifi_mcu_basic_example/output/
           python3 start_build.py rebuild
           
       - name: Upload
