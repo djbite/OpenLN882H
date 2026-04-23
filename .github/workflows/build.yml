@@ -8,6 +8,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: 'recursive'
+      - name: Enable TM1637
+        run: |
+          # Эта магия включает драйвер прямо в коде перед сборкой
+          find . -name "new_common.h" -exec sed -i 's/#define ENABLE_DRIVER_TM1637 0/#define ENABLE_DRIVER_TM1637 1/g' {} +
+          echo "#define ENABLE_DRIVER_TM1637 1" >> src/new_common.h
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -19,7 +24,5 @@ jobs:
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: OpenLN882H_binaries
-          path: |
-            project/wifi_mcu_basic_example/output/all.bin
-            project/wifi_mcu_basic_example/output/ota.bin
+          name: Custom_OpenLN882H_TM1637
+          path: project/wifi_mcu_basic_example/output/
